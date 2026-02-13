@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achieve - Luxury Productivity</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0A0A0A 0%, #1a0f0a 100%);
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #root {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .luxury-card {
+            background: linear-gradient(135deg, rgba(58, 38, 28, 0.4), rgba(43, 27, 18, 0.3));
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .luxury-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), transparent);
+            border-radius: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+
+        .luxury-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 30px 80px rgba(212, 175, 55, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .luxury-card:hover::before {
+            opacity: 1;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
+            color: #0A0A0A;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-gold:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #D4AF37;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #D4AF37;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #EF4444;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.75rem;
+            background: rgba(43, 27, 18, 0.5);
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D4AF37 0%, #F4D03F 50%, #D4AF37 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .animate-scale {
+            animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-slide {
+            animation: slideIn 0.5s ease;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(58, 38, 28, 0.95), rgba(43, 27, 18, 0.95));
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 
+                0 40px 100px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(212, 175, 55, 0.1);
+            animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-luxury {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(43, 27, 18, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 0.75rem;
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-luxury:focus {
+            border-color: #D4AF37;
+            background: rgba(43, 27, 18, 0.6);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .input-luxury::placeholder {
+            color: rgba(156, 163, 175, 0.6);
+        }
+
+        textarea.input-luxury {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3A261C, #2B1B12);
+            border-radius: 10px;
+            border: 2px solid #0A0A0A;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #D4AF37, #C19B2B);
+        }
+
+        ::selection {
+            background: #D4AF37;
+            color: #0A0A0A;
+        }
+
+        .glass-effect {
+            background: rgba(58, 38, 28, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .celebration {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0, 0, 0, 0.95) 70%);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .sparkle {
+            font-size: 6rem;
+            animation: pulse 2s infinite, rotate 3s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: #D4AF37;
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Storage helpers
+        const storage = {
+            get: (key) => {
+                try {
+                    const item = localStorage.getItem(key);
+                    return item ? JSON.parse(item) : null;
+                } catch {
+                    return null;
+                }
+            },
+            set: (key, value) => {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {
+                    console.error('Storage error:', e);
+                }
+            }
+        };
+
+        // Utility functions
+        const getTodayString = () => new Date().toISOString().split('T')[0];
+
+        const getWeekDates = () => {
+            const dates = [];
+            const today = new Date();
+            const currentDay = today.getDay();
+            const diff = currentDay === 0 ? -6 : 1 - currentDay;
+            const monday = new Date(today);
+            monday.setDate(today.getDate() + diff);
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
+                dates.push(date);
+            }
+            return dates;
+        };
+
+        const getHabitStreak = (habit) => {
+            if (!habit.completions) return 0;
+            let streak = 0;
+            let currentDate = new Date();
+            const today = currentDate.toISOString().split('T')[0];
+            
+            if (!habit.completions[today]) {
+                currentDate.setDate(currentDate.getDate() - 1);
+            }
+            
+            while (true) {
+                const dateString = currentDate.toISOString().split('T')[0];
+                if (habit.completions[dateString]) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        };
+
+        // Icons
+        const Icon = {
+            Menu: () => (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            ),
+            X: () => (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            ),
+            Check: ({ size = 16 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            ),
+            Flame: ({ size = 18 }) => (
+                <svg width={size} height={size} fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2c1.5 3.5 3 6 3 8.5 0 3-2.5 5.5-5.5 5.5S4 13.5 4 10.5c0-2 1-4.5 2.5-6.5 0 0 1 3 3.5 3s2-3 2-3z"/>
+                </svg>
+            ),
+            Target: ({ size = 24 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+            ),
+            Trending: ({ size = 24 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+            ),
+            CheckCircle: ({ size = 24 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            ),
+            Plus: ({ size = 20 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            ),
+            Edit: ({ size = 18 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            ),
+            Trash: ({ size = 18 }) => (
+                <svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            ),
+        };
+
+        function App() {
+            const [currentPage, setCurrentPage] = useState('dashboard');
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            
+            const [habits, setHabits] = useState(() => {
+                return storage.get('achieve_habits') || [
+                    {
+                        id: Date.now().toString(),
+                        name: 'Morning Meditation',
+                        description: '10 minutes of mindfulness',
+                        completions: {
+                            [getTodayString()]: true,
+                            [new Date(Date.now() - 86400000).toISOString().split('T')[0]]: true,
+                        },
+                    }
+                ];
+            });
+
+            const [goals, setGoals] = useState(() => {
+                return storage.get('achieve_goals') || [
+                    {
+                        id: Date.now().toString(),
+                        name: 'Launch Online Business',
+                        description: 'Create and launch my first digital product',
+                        milestones: [
+                            { id: '1', name: 'Research market', completed: true },
+                            { id: '2', name: 'Build MVP', completed: false },
+                            { id: '3', name: 'Get first customer', completed: false },
+                        ],
+                        completed: false,
+                    }
+                ];
+            });
+
+            const [showHabitModal, setShowHabitModal] = useState(false);
+            const [showGoalModal, setShowGoalModal] = useState(false);
+            const [editingHabit, setEditingHabit] = useState(null);
+            const [editingGoal, setEditingGoal] = useState(null);
+            const [showCelebration, setShowCelebration] = useState(false);
+
+            useEffect(() => {
+                storage.set('achieve_habits', habits);
+            }, [habits]);
+
+            useEffect(() => {
+                storage.set('achieve_goals', goals);
+            }, [goals]);
+
+            const motivationalQuotes = [
+                "Consistency creates greatness.",
+                "Your future is built today.",
+                "Excellence is not an act, but a habit.",
+                "Small steps lead to remarkable destinations.",
+                "Discipline is the bridge between goals and achievement.",
+            ];
+
+            const [quote] = useState(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
+
+            // Habit functions
+            const toggleHabit = (habitId) => {
+                const today = getTodayString();
+                setHabits(habits.map(h => {
+                    if (h.id === habitId) {
+                        const completions = { ...h.completions };
+                        completions[today] = !completions[today];
+                        return { ...h, completions };
+                    }
+                    return h;
+                }));
+            };
+
+            const addHabit = (habitData) => {
+                const newHabit = {
+                    id: Date.now().toString(),
+                    ...habitData,
+                    completions: {},
+                };
+                setHabits([...habits, newHabit]);
+            };
+
+            const updateHabit = (habitId, habitData) => {
+                setHabits(habits.map(h => 
+                    h.id === habitId ? { ...h, ...habitData } : h
+                ));
+            };
+
+            const deleteHabit = (habitId) => {
+                if (confirm('Delete this habit? This cannot be undone.')) {
+                    setHabits(habits.filter(h => h.id !== habitId));
+                }
+            };
+
+            // Goal functions
+            const addGoal = (goalData) => {
+                const newGoal = {
+                    id: Date.now().toString(),
+                    ...goalData,
+                    completed: false,
+                };
+                setGoals([...goals, newGoal]);
+            };
+
+            const updateGoal = (goalId, goalData) => {
+                setGoals(goals.map(g => 
+                    g.id === goalId ? { ...g, ...goalData } : g
+                ));
+            };
+
+            const deleteGoal = (goalId) => {
+                if (confirm('Delete this goal? This cannot be undone.')) {
+                    setGoals(goals.filter(g => g.id !== goalId));
+                }
+            };
+
+            const toggleMilestone = (goalId, milestoneId) => {
+                setGoals(goals.map(g => {
+                    if (g.id === goalId) {
+                        const updatedMilestones = g.milestones.map(m =>
+                            m.id === milestoneId ? { ...m, completed: !m.completed } : m
+                        );
+                        const allCompleted = updatedMilestones.every(m => m.completed);
+                        
+                        if (allCompleted && !g.completed) {
+                            setShowCelebration(true);
+                            setTimeout(() => setShowCelebration(false), 3000);
+                        }
+                        
+                        return { ...g, milestones: updatedMilestones, completed: allCompleted };
+                    }
+                    return g;
+                }));
+            };
+
+            // Modal components
+            const HabitModal = () => {
+                const [formData, setFormData] = useState(
+                    editingHabit || { name: '', description: '' }
+                );
+
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    if (editingHabit) {
+                        updateHabit(editingHabit.id, formData);
+                    } else {
+                        addHabit(formData);
+                    }
+                    setShowHabitModal(false);
+                    setEditingHabit(null);
+                };
+
+                return (
+                    <div className="modal-overlay" onClick={() => { setShowHabitModal(false); setEditingHabit(null); }}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                <h2 style={{ fontSize: '2.5rem', color: '#D4AF37' }}>
+                                    {editingHabit ? 'Edit Habit' : 'New Habit'}
+                                </h2>
+                                <button className="icon-btn" onClick={() => { setShowHabitModal(false); setEditingHabit(null); }}>
+                                    <Icon.X />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSubmit}>
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label style={{ display: 'block', color: '#D4AF37', marginBottom: '0.5rem', fontSize: '1.125rem', fontWeight: 600 }}>
+                                        Habit Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="input-luxury"
+                                        placeholder="Morning meditation"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '2rem' }}>
+                                    <label style={{ display: 'block', color: '#D4AF37', marginBottom: '0.5rem', fontSize: '1.125rem', fontWeight: 600 }}>
+                                        Description (Optional)
+                                    </label>
+                                    <textarea
+                                        className="input-luxury"
+                                        placeholder="10 minutes of mindfulness each morning"
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    />
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button type="button" className="btn-outline" style={{ flex: 1 }} onClick={() => { setShowHabitModal(false); setEditingHabit(null); }}>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="btn-gold" style={{ flex: 1 }}>
+                                        {editingHabit ? 'Update' : 'Create'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                );
+            };
+
+            const GoalModal = () => {
+                const [formData, setFormData] = useState(
+                    editingGoal || { name: '', description: '', milestones: [{ id: Date.now().toString(), name: '', completed: false }] }
+                );
+
+                const addMilestone = () => {
+                    setFormData({
+                        ...formData,
+                        milestones: [...formData.milestones, { id: Date.now().toString(), name: '', completed: false }]
+                    });
+                };
+
+                const updateMilestone = (id, name) => {
+                    setFormData({
+                        ...formData,
+                        milestones: formData.milestones.map(m => m.id === id ? { ...m, name } : m)
+                    });
+                };
+
+                const removeMilestone = (id) => {
+                    if (formData.milestones.length > 1) {
+                        setFormData({
+                            ...formData,
+                            milestones: formData.milestones.filter(m => m.id !== id)
+                        });
+                    }
+                };
+
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    const validMilestones = formData.milestones.filter(m => m.name.trim());
+                    if (editingGoal) {
+                        updateGoal(editingGoal.id, { ...formData, milestones: validMilestones });
+                    } else {
+                        addGoal({ ...formData, milestones: validMilestones });
+                    }
+                    setShowGoalModal(false);
+                    setEditingGoal(null);
+                };
+
+                return (
+                    <div className="modal-overlay" onClick={() => { setShowGoalModal(false); setEditingGoal(null); }}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                <h2 style={{ fontSize: '2.5rem', color: '#D4AF37' }}>
+                                    {editingGoal ? 'Edit Goal' : 'New Goal'}
+                                </h2>
+                                <button className="icon-btn" onClick={() => { setShowGoalModal(false); setEditingGoal(null); }}>
+                                    <Icon.X />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSubmit}>
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label style={{ display: 'block', color: '#D4AF37', marginBottom: '0.5rem', fontSize: '1.125rem', fontWeight: 600 }}>
+                                        Goal Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="input-luxury"
+                                        placeholder="Launch my business"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label style={{ display: 'block', color: '#D4AF37', marginBottom: '0.5rem', fontSize: '1.125rem', fontWeight: 600 }}>
+                                        Description (Optional)
+                                    </label>
+                                    <textarea
+                                        className="input-luxury"
+                                        placeholder="Build and launch an online business within 6 months"
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        style={{ minHeight: '80px' }}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '2rem' }}>
+                                    <label style={{ display: 'block', color: '#D4AF37', marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>
+                                        Milestones
+                                    </label>
+                                    {formData.milestones.map((milestone, index) => (
+                                        <div key={milestone.id} style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                                            <input
+                                                type="text"
+                                                className="input-luxury"
+                                                placeholder={`Milestone ${index + 1}`}
+                                                value={milestone.name}
+                                                onChange={(e) => updateMilestone(milestone.id, e.target.value)}
+                                                style={{ flex: 1 }}
+                                            />
+                                            {formData.milestones.length > 1 && (
+                                                <button type="button" className="icon-btn btn-delete" onClick={() => removeMilestone(milestone.id)}>
+                                                    <Icon.Trash size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <button type="button" className="btn-outline" onClick={addMilestone} style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Icon.Plus size={16} />
+                                            <span>Add Milestone</span>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button type="button" className="btn-outline" style={{ flex: 1 }} onClick={() => { setShowGoalModal(false); setEditingGoal(null); }}>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="btn-gold" style={{ flex: 1 }}>
+                                        {editingGoal ? 'Update' : 'Create'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                );
+            };
+
+            const Navigation = () => {
+                const navItems = [
+                    { id: 'dashboard', label: 'Dashboard' },
+                    { id: 'habits', label: 'Habits' },
+                    { id: 'goals', label: 'Goals' },
+                    { id: 'analytics', label: 'Analytics' },
+                ];
+
+                return (
+                    <nav className="glass-effect" style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 50,
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                    }}>
+                        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 1.5rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '5rem' }}>
+                                <h1 style={{ fontSize: '2.25rem', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '0.05em', fontWeight: 900 }}>
+                                    Achieve
+                                </h1>
+                                
+                                <div style={{ display: 'none', gap: '0.5rem' }} className="desktop-nav">
+                                    {navItems.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setCurrentPage(item.id)}
+                                            style={{
+                                                padding: '0.75rem 1.75rem',
+                                                borderRadius: '0.75rem',
+                                                border: 'none',
+                                                background: currentPage === item.id ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))' : 'transparent',
+                                                color: currentPage === item.id ? '#D4AF37' : '#9CA3AF',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s',
+                                                fontSize: '1rem',
+                                                fontWeight: 600,
+                                                fontFamily: 'Cormorant Garamond, serif',
+                                                letterSpacing: '0.05em'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.target.style.color = '#D4AF37';
+                                                e.target.style.background = 'rgba(212, 175, 55, 0.1)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (currentPage !== item.id) {
+                                                    e.target.style.color = '#9CA3AF';
+                                                    e.target.style.background = 'transparent';
+                                                }
+                                            }}
+                                        >
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    className="icon-btn mobile-menu-btn"
+                                    style={{ color: '#D4AF37' }}
+                                >
+                                    {mobileMenuOpen ? <Icon.X /> : <Icon.Menu />}
+                                </button>
+                            </div>
+                        </div>
+
+                        {mobileMenuOpen && (
+                            <div className="glass-effect" style={{ borderTop: '1px solid rgba(212, 175, 55, 0.2)' }}>
+                                <div style={{ padding: '0.5rem 1rem 1rem' }}>
+                                    {navItems.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => {
+                                                setCurrentPage(item.id);
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            style={{
+                                                width: '100%',
+                                                display: 'block',
+                                                padding: '1rem',
+                                                marginBottom: '0.5rem',
+                                                borderRadius: '0.75rem',
+                                                border: 'none',
+                                                background: currentPage === item.id ? 'rgba(212, 175, 55, 0.15)' : 'transparent',
+                                                color: currentPage === item.id ? '#D4AF37' : '#9CA3AF',
+                                                cursor: 'pointer',
+                                                textAlign: 'left',
+                                                fontFamily: 'Cormorant Garamond, serif',
+                                                fontSize: '1.125rem',
+                                                fontWeight: 600,
+                                                transition: 'all 0.3s'
+                                            }}
+                                        >
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </nav>
+                );
+            };
+
+            const Dashboard = () => {
+                const today = getTodayString();
+                const completedToday = habits.filter(h => h.completions?.[today]).length;
+                const activeGoals = goals.filter(g => !g.completed).length;
+                const bestStreak = habits.length > 0 ? Math.max(...habits.map(h => getHabitStreak(h))) : 0;
+
+                return (
+                    <div className="animate-fade">
+                        <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
+                            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
+                                Welcome Back
+                            </h1>
+                            <p style={{ fontSize: '1.5rem', color: '#9CA3AF', fontStyle: 'italic', fontWeight: 500 }}>
+                                "{quote}"
+                            </p>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1.5rem' }}>
+                                    <div style={{ padding: '1rem', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))', borderRadius: '1rem' }}>
+                                        <Icon.CheckCircle size={32} />
+                                    </div>
+                                    <span style={{ fontSize: '3rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                        {completedToday}/{habits.length}
+                                    </span>
+                                </div>
+                                <h3 style={{ color: '#9CA3AF', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem', fontWeight: 700 }}>Today's Habits</h3>
+                                <div className="progress-bar">
+                                    <div className="progress-fill" style={{ width: `${habits.length > 0 ? (completedToday / habits.length) * 100 : 0}%` }}></div>
+                                </div>
+                            </div>
+
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1.5rem' }}>
+                                    <div style={{ padding: '1rem', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))', borderRadius: '1rem' }}>
+                                        <Icon.Target size={32} />
+                                    </div>
+                                    <span style={{ fontSize: '3rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                        {activeGoals}
+                                    </span>
+                                </div>
+                                <h3 style={{ color: '#9CA3AF', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem', fontWeight: 700 }}>Active Goals</h3>
+                                <p style={{ fontSize: '0.875rem', color: '#6B7280', fontWeight: 500 }}>{goals.filter(g => g.completed).length} goals conquered</p>
+                            </div>
+
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1.5rem' }}>
+                                    <div style={{ padding: '1rem', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))', borderRadius: '1rem' }}>
+                                        <Icon.Flame size={32} />
+                                    </div>
+                                    <span style={{ fontSize: '3rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                        {bestStreak}
+                                    </span>
+                                </div>
+                                <h3 style={{ color: '#9CA3AF', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem', fontWeight: 700 }}>Best Streak</h3>
+                                <p style={{ fontSize: '0.875rem', color: '#6B7280', fontWeight: 500 }}>Days of pure discipline</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 style={{ fontSize: '2.5rem', color: 'white', marginBottom: '2rem', fontWeight: 700 }}>Today's Habits</h2>
+                            {habits.length === 0 ? (
+                                <div className="luxury-card empty-state">
+                                    <div className="empty-state-icon">✨</div>
+                                    <h3 style={{ fontSize: '2rem', color: 'white', marginBottom: '1rem' }}>No habits yet</h3>
+                                    <p style={{ color: '#9CA3AF', marginBottom: '2rem', fontSize: '1.125rem' }}>Create your first habit to start building discipline</p>
+                                    <button className="btn-gold" onClick={() => { setCurrentPage('habits'); }}>
+                                        Create First Habit
+                                    </button>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                    {habits.map((habit) => {
+                                        const isCompleted = habit.completions?.[today];
+                                        const streak = getHabitStreak(habit);
+
+                                        return (
+                                            <div
+                                                key={habit.id}
+                                                className="luxury-card animate-slide"
+                                                onClick={() => toggleHabit(habit.id)}
+                                                style={{ 
+                                                    display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    justifyContent: 'space-between',
+                                                    cursor: 'pointer',
+                                                    gap: '1.5rem'
+                                                }}
+                                            >
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flex: 1 }}>
+                                                    <div style={{
+                                                        width: '2.5rem',
+                                                        height: '2.5rem',
+                                                        borderRadius: '50%',
+                                                        border: isCompleted ? '3px solid #D4AF37' : '3px solid #6B7280',
+                                                        background: isCompleted ? 'linear-gradient(135deg, #D4AF37, #F4D03F)' : 'transparent',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        transition: 'all 0.3s',
+                                                        flexShrink: 0
+                                                    }}>
+                                                        {isCompleted && <Icon.Check size={20} />}
+                                                    </div>
+                                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                                        <h3 style={{ 
+                                                            fontSize: '1.375rem', 
+                                                            fontWeight: 600,
+                                                            color: isCompleted ? '#6B7280' : 'white',
+                                                            textDecoration: isCompleted ? 'line-through' : 'none',
+                                                            marginBottom: '0.25rem'
+                                                        }}>
+                                                            {habit.name}
+                                                        </h3>
+                                                        {habit.description && (
+                                                            <p style={{ fontSize: '1rem', color: '#9CA3AF' }}>{habit.description}</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {streak > 0 && (
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1.25rem', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))', borderRadius: '9999px' }}>
+                                                        <Icon.Flame size={24} />
+                                                        <span style={{ fontWeight: 900, fontSize: '1.25rem', color: '#D4AF37' }}>{streak}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            const Habits = () => {
+                const today = getTodayString();
+                const weekDates = getWeekDates();
+
+                return (
+                    <div className="animate-fade">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', gap: '1rem', flexWrap: 'wrap' }}>
+                            <div>
+                                <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.5rem', fontWeight: 900 }}>
+                                    Habits
+                                </h1>
+                                <p style={{ color: '#9CA3AF', fontSize: '1.125rem', fontWeight: 500 }}>Build consistency, one day at a time</p>
+                            </div>
+                            <button className="btn-gold" onClick={() => setShowHabitModal(true)}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <Icon.Plus size={20} />
+                                    <span>New Habit</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        {habits.length === 0 ? (
+                            <div className="luxury-card empty-state">
+                                <div className="empty-state-icon">🎯</div>
+                                <h3 style={{ fontSize: '2rem', color: 'white', marginBottom: '1rem' }}>No habits yet</h3>
+                                <p style={{ color: '#9CA3AF', marginBottom: '2rem', fontSize: '1.125rem' }}>Create your first habit to start your journey</p>
+                                <button className="btn-gold" onClick={() => setShowHabitModal(true)}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <Icon.Plus size={20} />
+                                        <span>Create First Habit</span>
+                                    </div>
+                                </button>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                {habits.map((habit) => {
+                                    const streak = getHabitStreak(habit);
+
+                                    return (
+                                        <div key={habit.id} className="luxury-card animate-slide">
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '2rem', gap: '1rem', flexWrap: 'wrap' }}>
+                                                <div style={{ flex: 1, minWidth: '200px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+                                                        <h3 style={{ fontSize: '1.875rem', fontWeight: 700, color: 'white' }}>{habit.name}</h3>
+                                                        {streak > 0 && (
+                                                            <div style={{ 
+                                                                display: 'flex', 
+                                                                alignItems: 'center', 
+                                                                gap: '0.5rem',
+                                                                padding: '0.5rem 1rem',
+                                                                background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))',
+                                                                borderRadius: '9999px'
+                                                            }}>
+                                                                <Icon.Flame size={20} />
+                                                                <span style={{ color: '#D4AF37', fontWeight: 900, fontSize: '1.125rem' }}>{streak}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    {habit.description && (
+                                                        <p style={{ color: '#9CA3AF', fontSize: '1.125rem' }}>{habit.description}</p>
+                                                    )}
+                                                </div>
+                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                    <button className="icon-btn" onClick={() => { setEditingHabit(habit); setShowHabitModal(true); }}>
+                                                        <Icon.Edit />
+                                                    </button>
+                                                    <button className="icon-btn btn-delete" onClick={() => deleteHabit(habit.id)}>
+                                                        <Icon.Trash />
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.75rem' }}>
+                                                {weekDates.map((date) => {
+                                                    const dateString = date.toISOString().split('T')[0];
+                                                    const isCompleted = habit.completions?.[dateString];
+                                                    const isToday = dateString === today;
+
+                                                    return (
+                                                        <button
+                                                            key={dateString}
+                                                            onClick={(e) => { e.stopPropagation(); if (isToday) toggleHabit(habit.id); }}
+                                                            disabled={!isToday}
+                                                            className="animate-scale"
+                                                            style={{
+                                                                aspectRatio: '1',
+                                                                borderRadius: '1rem',
+                                                                border: isToday && !isCompleted ? '3px solid #D4AF37' : 'none',
+                                                                background: isCompleted 
+                                                                    ? 'linear-gradient(135deg, #D4AF37, #F4D03F)' 
+                                                                    : isToday 
+                                                                    ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))' 
+                                                                    : 'rgba(43, 27, 18, 0.5)',
+                                                                color: isCompleted ? '#0A0A0A' : isToday ? '#D4AF37' : '#6B7280',
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                cursor: isToday ? 'pointer' : 'default',
+                                                                transition: 'all 0.3s',
+                                                                fontSize: '0.875rem',
+                                                                fontWeight: 700,
+                                                                boxShadow: isCompleted ? '0 8px 16px rgba(212, 175, 55, 0.3)' : 'none'
+                                                            }}
+                                                            onMouseEnter={(e) => {
+                                                                if (isToday) {
+                                                                    e.target.style.transform = 'scale(1.1)';
+                                                                    e.target.style.boxShadow = '0 12px 24px rgba(212, 175, 55, 0.4)';
+                                                                }
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                if (isToday) {
+                                                                    e.target.style.transform = 'scale(1)';
+                                                                    e.target.style.boxShadow = isCompleted ? '0 8px 16px rgba(212, 175, 55, 0.3)' : 'none';
+                                                                }
+                                                            }}
+                                                        >
+                                                            <span style={{ textTransform: 'uppercase', fontSize: '0.625rem', marginBottom: '0.25rem', letterSpacing: '0.1em' }}>
+                                                                {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                                                            </span>
+                                                            <span style={{ fontSize: '1.5rem', fontWeight: 900 }}>
+                                                                {date.getDate()}
+                                                            </span>
+                                                            {isCompleted && (
+                                                                <div style={{ marginTop: '0.25rem' }}>
+                                                                    <Icon.Check size={12} />
+                                                                </div>
+                                                            )}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const Goals = () => {
+                const activeGoals = goals.filter(g => !g.completed);
+                const completedGoals = goals.filter(g => g.completed);
+
+                return (
+                    <div className="animate-fade">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', gap: '1rem', flexWrap: 'wrap' }}>
+                            <div>
+                                <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.5rem', fontWeight: 900 }}>
+                                    Goals
+                                </h1>
+                                <p style={{ color: '#9CA3AF', fontSize: '1.125rem', fontWeight: 500 }}>Transform vision into reality</p>
+                            </div>
+                            <button className="btn-gold" onClick={() => setShowGoalModal(true)}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <Icon.Plus size={20} />
+                                    <span>New Goal</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        {goals.length === 0 ? (
+                            <div className="luxury-card empty-state">
+                                <div className="empty-state-icon">🎯</div>
+                                <h3 style={{ fontSize: '2rem', color: 'white', marginBottom: '1rem' }}>No goals yet</h3>
+                                <p style={{ color: '#9CA3AF', marginBottom: '2rem', fontSize: '1.125rem' }}>Set your first goal and start achieving greatness</p>
+                                <button className="btn-gold" onClick={() => setShowGoalModal(true)}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <Icon.Plus size={20} />
+                                        <span>Create First Goal</span>
+                                    </div>
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                {activeGoals.length > 0 && (
+                                    <div style={{ marginBottom: '3rem' }}>
+                                        <h2 style={{ fontSize: '2rem', color: 'white', marginBottom: '2rem', fontWeight: 700 }}>Active Goals</h2>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+                                            {activeGoals.map((goal) => {
+                                                const progress = goal.milestones.length > 0
+                                                    ? (goal.milestones.filter(m => m.completed).length / goal.milestones.length) * 100
+                                                    : 0;
+
+                                                return (
+                                                    <div key={goal.id} className="luxury-card animate-scale">
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1.5rem', gap: '1rem' }}>
+                                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                                <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>{goal.name}</h3>
+                                                                {goal.description && (
+                                                                    <p style={{ fontSize: '1rem', color: '#9CA3AF' }}>{goal.description}</p>
+                                                                )}
+                                                            </div>
+                                                            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+                                                                <button className="icon-btn" onClick={() => { setEditingGoal(goal); setShowGoalModal(true); }}>
+                                                                    <Icon.Edit />
+                                                                </button>
+                                                                <button className="icon-btn btn-delete" onClick={() => deleteGoal(goal.id)}>
+                                                                    <Icon.Trash />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div style={{ marginBottom: '2rem' }}>
+                                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', marginBottom: '0.75rem' }}>
+                                                                <span style={{ color: '#9CA3AF', fontWeight: 600 }}>Progress</span>
+                                                                <span style={{ color: '#D4AF37', fontWeight: 900, fontSize: '1.25rem' }}>{Math.round(progress)}%</span>
+                                                            </div>
+                                                            <div className="progress-bar" style={{ height: '1rem' }}>
+                                                                <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                                            {goal.milestones.map((milestone) => (
+                                                                <div
+                                                                    key={milestone.id}
+                                                                    onClick={() => toggleMilestone(goal.id, milestone.id)}
+                                                                    style={{
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        gap: '1rem',
+                                                                        padding: '1rem',
+                                                                        borderRadius: '0.75rem',
+                                                                        background: 'rgba(43, 27, 18, 0.4)',
+                                                                        cursor: 'pointer',
+                                                                        transition: 'all 0.3s',
+                                                                        border: '1px solid transparent'
+                                                                    }}
+                                                                    onMouseEnter={(e) => {
+                                                                        e.currentTarget.style.background = 'rgba(43, 27, 18, 0.6)';
+                                                                        e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+                                                                        e.currentTarget.style.transform = 'translateX(4px)';
+                                                                    }}
+                                                                    onMouseLeave={(e) => {
+                                                                        e.currentTarget.style.background = 'rgba(43, 27, 18, 0.4)';
+                                                                        e.currentTarget.style.borderColor = 'transparent';
+                                                                        e.currentTarget.style.transform = 'translateX(0)';
+                                                                    }}
+                                                                >
+                                                                    <div style={{
+                                                                        width: '1.75rem',
+                                                                        height: '1.75rem',
+                                                                        borderRadius: '50%',
+                                                                        border: milestone.completed ? '3px solid #D4AF37' : '3px solid #6B7280',
+                                                                        background: milestone.completed ? 'linear-gradient(135deg, #D4AF37, #F4D03F)' : 'transparent',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        flexShrink: 0,
+                                                                        transition: 'all 0.3s'
+                                                                    }}>
+                                                                        {milestone.completed && <Icon.Check size={14} />}
+                                                                    </div>
+                                                                    <span style={{
+                                                                        flex: 1,
+                                                                        color: milestone.completed ? '#6B7280' : 'white',
+                                                                        textDecoration: milestone.completed ? 'line-through' : 'none',
+                                                                        fontSize: '1.125rem',
+                                                                        fontWeight: 500
+                                                                    }}>
+                                                                        {milestone.name}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {completedGoals.length > 0 && (
+                                    <div>
+                                        <h2 style={{ fontSize: '2rem', color: 'white', marginBottom: '2rem', fontWeight: 700 }}>Completed Goals</h2>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+                                            {completedGoals.map((goal) => (
+                                                <div key={goal.id} className="luxury-card" style={{ background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05))', borderColor: 'rgba(212, 175, 55, 0.4)' }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
+                                                        <div style={{ flex: 1 }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                                                <Icon.CheckCircle size={28} />
+                                                                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#D4AF37' }}>{goal.name}</h3>
+                                                            </div>
+                                                            {goal.description && (
+                                                                <p style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{goal.description}</p>
+                                                            )}
+                                                        </div>
+                                                        <button className="icon-btn btn-delete" onClick={() => deleteGoal(goal.id)}>
+                                                            <Icon.Trash />
+                                                        </button>
+                                                    </div>
+                                                    <p style={{ fontSize: '0.875rem', color: '#6B7280', fontWeight: 500 }}>
+                                                        ✨ Completed all {goal.milestones.length} milestones
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                );
+            };
+
+            const Analytics = () => {
+                const totalHabits = habits.length;
+                const bestStreak = habits.length > 0 ? Math.max(...habits.map(h => getHabitStreak(h))) : 0;
+                const goalsCompleted = goals.filter(g => g.completed).length;
+                const activeGoals = goals.filter(g => !g.completed).length;
+
+                return (
+                    <div className="animate-fade">
+                        <div style={{ marginBottom: '3rem' }}>
+                            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.5rem', fontWeight: 900 }}>
+                                Analytics
+                            </h1>
+                            <p style={{ color: '#9CA3AF', fontSize: '1.125rem', fontWeight: 500 }}>Track your progress and consistency</p>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '3.5rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.75rem' }}>
+                                    {totalHabits}
+                                </div>
+                                <div style={{ fontSize: '0.875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700 }}>Active Habits</div>
+                            </div>
+
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '3.5rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.75rem' }}>
+                                    {bestStreak}
+                                </div>
+                                <div style={{ fontSize: '0.875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700 }}>Best Streak</div>
+                            </div>
+
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '3.5rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.75rem' }}>
+                                    {activeGoals}
+                                </div>
+                                <div style={{ fontSize: '0.875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700 }}>Active Goals</div>
+                            </div>
+
+                            <div className="luxury-card gold-glow" style={{ textAlign: 'center' }}>
+                                <div style={{ fontSize: '3.5rem', fontWeight: 900, background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '0.75rem' }}>
+                                    {goalsCompleted}
+                                </div>
+                                <div style={{ fontSize: '0.875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700 }}>Goals Conquered</div>
+                            </div>
+                        </div>
+
+                        {habits.length > 0 && (
+                            <div className="luxury-card">
+                                <h2 style={{ fontSize: '2rem', color: 'white', marginBottom: '2rem', fontWeight: 700 }}>Habit Performance</h2>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    {habits.map(habit => {
+                                        const streak = getHabitStreak(habit);
+                                        const completionRate = 85; // Sample
+
+                                        return (
+                                            <div key={habit.id} className="animate-slide" style={{ padding: '1.5rem', background: 'rgba(43, 27, 18, 0.4)', borderRadius: '1rem', border: '1px solid rgba(212, 175, 55, 0.1)' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+                                                    <div>
+                                                        <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', marginBottom: '0.25rem' }}>{habit.name}</h3>
+                                                        <p style={{ fontSize: '1rem', color: '#9CA3AF' }}>Excellent consistency this week</p>
+                                                    </div>
+                                                    {streak > 0 && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1.5rem', background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1))', borderRadius: '9999px' }}>
+                                                            <Icon.Flame size={24} />
+                                                            <span style={{ color: '#D4AF37', fontWeight: 900, fontSize: '1.375rem' }}>{streak}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="progress-bar" style={{ height: '1rem' }}>
+                                                    <div className="progress-fill" style={{ width: `${completionRate}%` }}></div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const renderPage = () => {
+                switch (currentPage) {
+                    case 'dashboard': return <Dashboard />;
+                    case 'habits': return <Habits />;
+                    case 'goals': return <Goals />;
+                    case 'analytics': return <Analytics />;
+                    default: return <Dashboard />;
+                }
+            };
+
+            return (
+                <div>
+                    <Navigation />
+                    <main style={{ paddingTop: '7rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', paddingBottom: '4rem', maxWidth: '1400px', margin: '0 auto' }}>
+                        {renderPage()}
+                    </main>
+
+                    {showHabitModal && <HabitModal />}
+                    {showGoalModal && <GoalModal />}
+
+                    {showCelebration && (
+                        <div className="celebration">
+                            <div style={{ textAlign: 'center' }}>
+                                <div className="sparkle">✨</div>
+                                <h2 style={{ fontSize: '4rem', background: 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1rem', fontWeight: 900 }}>
+                                    Congratulations!
+                                </h2>
+                                <p style={{ fontSize: '2rem', color: 'white', fontWeight: 600 }}>Goal Completed! 🎉</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+    <style>
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+            }
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+    </style>
+</body>
+</html>
